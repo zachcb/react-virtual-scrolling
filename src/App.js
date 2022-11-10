@@ -35,8 +35,8 @@ const ListItem = styled.div`
 
 function App() {
   // Object of items, keyed by the index to be rendered in the
-  // InfiniteLoader. This is so we easily see the position rather
-  // than created a new Array(X)
+  // InfiniteLoader. This is so we easily set/get the index
+  // rather than creating a new Array(X)
   const [list, setList] = useState({})
 
   // Currently using a static last item index
