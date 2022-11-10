@@ -36,7 +36,9 @@ function App() {
   // InfiniteLoader. This is so we easily see the position rather
   // than created a new Array(X)
   const [list, setList] = useState({})
-  const [currentIndex] = useState(99)
+
+  // Currently using a static last item index
+  const [currentIndex] = useState(50)
 
   // Number of rows in list; can be arbitrary high number if actual number is unknown.
   const remoteRowCount = 100
@@ -52,31 +54,31 @@ function App() {
 
   // If it is not in the list, load more
   const isRowLoaded = ({ index }) => {
-    return !!list[index.toString()];
+    return !!list[index];
   }
 
   const loadMoreRows = ({ startIndex, stopIndex }) =>  {
-    return fetch(`${BASE_URL}/posts?_start=${startIndex}&_end=${stopIndex}`)
+    return fetch(`${BASE_URL}/posts?_start=${startIndex}&_end=${stopIndex + 1}`)
       .then(response => response.json())
       .then((data) => {
         let newData = {}
-
-
+        
         // Apply data items to object.
         // The max result of startIndex and dataIndex + 1 should equal
         // stopIndex. Therefore fitting in with the loadMoreRows params
         data.forEach((item, dataIndex) => {
-          newData[`${startIndex + dataIndex + 1}`] = item
+          const index = startIndex + dataIndex
+          newData[index] = item
         })
 
-        setList({ ...list, ...newData })
+        setList(Object.assign({ ...list, ...newData }))
       })
   }
 
   const rowRenderer = ({ key, index, style}) => {
     // If there isn't an item, show nothing
-    if (!list[index.toString()]) {
-      return;
+    if (!list[index]) {
+      return <div key={key}>loading..</div>;
     }
 
     return (
@@ -84,7 +86,7 @@ function App() {
         key={key}
         style={style}
       >
-        {list[index.toString()].id}
+        {list[index].id}
       </ListItem>
     )
   }
