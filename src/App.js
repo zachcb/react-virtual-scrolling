@@ -63,9 +63,6 @@ function App() {
       .then((data) => {
         let newData = {}
         
-        // Apply data items to object.
-        // The max result of startIndex and dataIndex + 1 should equal
-        // stopIndex. Therefore fitting in with the loadMoreRows params
         data.forEach((item, dataIndex) => {
           const index = startIndex + dataIndex
           newData[index] = item
