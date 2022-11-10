@@ -11,6 +11,8 @@ const Container = styled.div`
   height: 100vh;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
+  gap: 16px;
 `
 
 const Content = styled.div`
@@ -38,7 +40,7 @@ function App() {
   const [list, setList] = useState({})
 
   // Currently using a static last item index
-  const [currentIndex] = useState(50)
+  const [currentIndex, setCurrentIndex] = useState(50)
 
   // Number of rows in list; can be arbitrary high number if actual number is unknown.
   const remoteRowCount = 100
@@ -55,6 +57,10 @@ function App() {
   // If it is not in the list, load more
   const isRowLoaded = ({ index }) => {
     return !!list[index];
+  }
+
+  const handleInput = (event) => {
+    setCurrentIndex(parseInt(event.target.value, 10))
   }
 
   const loadMoreRows = ({ startIndex, stopIndex }) =>  {
@@ -90,6 +96,7 @@ function App() {
 
   return (
     <Container className="App">
+      <input onInput={handleInput} placeholder={currentIndex}></input>
       <Content>
         <InfiniteLoader
           isRowLoaded={isRowLoaded}
